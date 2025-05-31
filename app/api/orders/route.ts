@@ -1,8 +1,11 @@
 // app/api/orders/route.ts
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { Resend } from 'resend';
-import Stripe from 'stripe';
+import { NextResponse } from 'next/server'
+import prisma from '@/lib/prisma' 
+import { Resend } from 'resend'
+import Stripe from 'stripe'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 // Initialize clients
 const prisma = new PrismaClient();
