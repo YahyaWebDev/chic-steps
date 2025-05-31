@@ -1,9 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 
-export default function SuccessPage() {
+// Wrap the content that uses searchParams in a separate component
+function SuccessContent() {
   const searchParams = useSearchParams();
   const { user } = useUser();
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -40,5 +41,14 @@ export default function SuccessPage() {
         A receipt has been sent to your email.
       </p>
     </div>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto p-4 text-center">Loading...</div>}>
+      <SuccessContent />
+    </Suspense>
   );
 }
