@@ -1,18 +1,13 @@
 // app/api/orders/route.ts
-import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma' 
-import { Resend } from 'resend'
-import Stripe from 'stripe'
+import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import { Resend } from 'resend';
+import Stripe from 'stripe';
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-
-// Initialize clients
+// Initialize Prisma client directly
 const prisma = new PrismaClient();
-const resend = new Resend(process.env.RESEND_API_KEY);
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-// Type Definitions
+// Type definitions
 interface OrderRequest {
   sessionId: string;
   userId: string;
@@ -37,6 +32,9 @@ interface OrderWithItems {
 }
 
 export async function POST(request: Request) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+
   try {
     // Validate request
     const { sessionId, userId }: OrderRequest = await request.json();
@@ -51,7 +49,7 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
 
-    // Create order in database with proper typing
+    // Create order in database
     const order = await prisma.order.create({
       data: {
         userId,
@@ -60,7 +58,6 @@ export async function POST(request: Request) {
         status: 'completed',
         items: {
           create: lineItems.data.map(item => {
-            // Extract size from metadata or description
             const size = item.description?.match(/Size: (US \d+)/)?.[1] || 'One Size';
             
             return {
@@ -88,17 +85,14 @@ export async function POST(request: Request) {
           }
         }
       }
-    }) as unknown as OrderWithItems;
-
-    // Generate type-safe email content
-    const emailHtml = generateOrderConfirmationEmail(order);
+    });
 
     // Send confirmation email
     await resend.emails.send({
       from: 'orders@yourdomain.com',
       to: order.user.email,
       subject: `Order Confirmation #${order.id}`,
-      html: emailHtml
+      html: generateOrderConfirmationEmail(order)
     });
 
     return NextResponse.json({ 
@@ -115,10 +109,11 @@ export async function POST(request: Request) {
       },
       { status: 500 }
     );
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
-// Helper function for email generation
 function generateOrderConfirmationEmail(order: OrderWithItems): string {
   return `
     <h1>Thank you for your order!</h1>
