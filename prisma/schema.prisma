@@ -7,37 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          String     @id @default(cuid())
-  name        String
-  description String
-  price       Float
-  image       String?
-  sizes       String[]
-  category    String
-  createdAt   DateTime   @default(now())
-  orderItems  OrderItem[]  // This is the crucial missing relation
-}
-
 model Order {
-  id          String     @id @default(cuid())
-  user        User       @relation(fields: [userId], references: [id])
-  userId      String
-  items       OrderItem[]
-  total       Float
-  paymentId   String?
-  status      String     @default("pending")
-  createdAt   DateTime   @default(now())
+  id        String      @id @default(cuid())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  items     OrderItem[]
+  total     Float
+  paymentId String?
+  status    String      @default("pending")
+  createdAt DateTime    @default(now())
 }
 
 model OrderItem {
-  id        String   @id @default(cuid())
-  order     Order    @relation(fields: [orderId], references: [id])
+  id        String  @id @default(cuid())
+  order     Order   @relation(fields: [orderId], references: [id])
   orderId   String
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
   productId String
   size      String
-  quantity  Int      @default(1)
+  quantity  Int     @default(1)
   price     Float
 }
 
@@ -47,8 +35,23 @@ model User {
   email     String
   name      String?
   orders    Order[]
+  reviews   Review[]  // Added relation to Review
   createdAt DateTime  @default(now())
 }
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  image       String?
+  sizes       String[]
+  category    String
+  orderItems  OrderItem[]
+  reviews     Review[]  // Added relation to Review
+  createdAt   DateTime  @default(now())
+}
+
 model Review {
   id          String   @id @default(cuid())
   userId      String
