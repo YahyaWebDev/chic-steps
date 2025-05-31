@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -9,44 +8,44 @@ datasource db {
 }
 
 model Product {
-  id          String      @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
   description String
   price       Float
   image       String?
   sizes       String[]
   category    String
-  createdAt   DateTime    @default(now())
-  orderItems  OrderItem[]
-}
-
-model OrderItem {
-  id        String  @id @default(cuid())
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   String
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
-  size      String
-  quantity  Int     @default(1)
-  price     Float
+  createdAt   DateTime   @default(now())
+  orderItems  OrderItem[]  // This is the crucial missing relation
 }
 
 model Order {
-  id        String      @id @default(cuid())
-  user      User        @relation(fields: [userId], references: [id])
-  userId    String
-  items     OrderItem[]
-  total     Float
-  paymentId String?
-  status    String      @default("pending")
-  createdAt DateTime    @default(now())
+  id          String     @id @default(cuid())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String
+  items       OrderItem[]
+  total       Float
+  paymentId   String?
+  status      String     @default("pending")
+  createdAt   DateTime   @default(now())
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  size      String
+  quantity  Int      @default(1)
+  price     Float
 }
 
 model User {
-  id        String   @id @default(cuid())
-  clerkId   String   @unique
+  id        String    @id @default(cuid())
+  clerkId   String    @unique
   email     String
   name      String?
   orders    Order[]
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 }
