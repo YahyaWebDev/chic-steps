@@ -1,13 +1,18 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-// Define protected routes (optional)
-const isProtectedRoute = createRouteMatcher(['/dashboard(.*)']);
+const isProtectedRoute = createRouteMatcher([
+  '/dashboard(.*)', // Add your protected routes here
+  '/profile(.*)'
+]);
 
-export default clerkMiddleware((auth, req) => {
-  // Protect routes
+export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) {
-    auth().protect({
-      fallbackRedirectUrl: 'natural-bluebird-84.clerk.accounts.dev', // Redirect to sign-in if not authenticated
+    await auth().protect({
+      // Use Clerk's hosted domain for sign-in
+      fallbackRedirectUrl: 'https://natural-bluebird-84.clerk.accounts.dev',
+      
+      // Optional: Return to the original page after sign-in
+      returnBackUrl: req.url
     });
   }
 });
