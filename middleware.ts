@@ -1,12 +1,15 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export default clerkMiddleware({
-  // Required for Vercel deployments
-  publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-  secretKey: process.env.CLERK_SECRET_KEY,
-  auth().redirectToSignIn({ 
-  fallbackRedirectUrl: "/dashboard" 
-});
+// Define protected routes (optional)
+const isProtectedRoute = createRouteMatcher(['/dashboard(.*)']);
+
+export default clerkMiddleware((auth, req) => {
+  // Protect routes
+  if (isProtectedRoute(req)) {
+    auth().protect({
+      fallbackRedirectUrl: 'natural-bluebird-84.clerk.accounts.dev', // Redirect to sign-in if not authenticated
+    });
+  }
 });
 
 export const config = {
