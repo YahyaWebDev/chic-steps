@@ -1,21 +1,10 @@
 // middleware.ts
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
-// Define public routes
-const isPublicRoute = createRouteMatcher([
-  '/',
-  '/api/webhook',
-  '/sign-in(.*)',
-  '/sign-up(.*)'
-]);
-
-export default clerkMiddleware((auth, req) => {
-  if (!isPublicRoute(req)) {
-    // New v5+ protection syntax
-    return auth().protect();
-  }
-  // Allow public routes
-  return NextResponse.next();
+export default clerkMiddleware((auth) => {
+  // No need to explicitly call protect() - Clerk handles it automatically
+  return auth().protect();
 });
 
 export const config = {
