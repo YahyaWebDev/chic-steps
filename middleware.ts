@@ -1,8 +1,8 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
 
 export default clerkMiddleware({
-  debug: true, // Optional: Logs Clerk middleware activity
-  skipCookieCheck: process.env.NODE_ENV === 'development' // Disables cookie checks in dev
+  debug: process.env.NODE_ENV === 'development',
+  skipCookieCheck: true // Disables cookie domain validation
 });
 
 export const config = {
