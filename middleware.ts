@@ -1,7 +1,7 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
 
 export default clerkMiddleware({
-  ignoredRoutes: ['/api/some-route'], // Routes that won't trigger auth checks
+  publicRoutes: ['/api/some-route'], // No auth required for these routes
 });
 
 export const config = {
