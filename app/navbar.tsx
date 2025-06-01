@@ -23,7 +23,7 @@ export default function Navbar(){
         <h1 className={` text-xl font-bold`}>Chic   Steps ™</h1>
       </div>
       
-        <ul className="flex flex-row justify-center items-center flex-nowrap gap-2 md:flex max-md:hidden max-md:flex-col max-md:fixed max-md:top-30 max-md:w-2xs max-md:bg-gray-800  max-md:left-0 max-md:items-start max-md:p-5 max-md:border-4 max-md:rounded-xl " id="links" ref={ulLinks}>
+        <ul className="z-[1000] flex flex-row justify-center items-center flex-nowrap gap-2 md:flex max-md:hidden max-md:flex-col max-md:fixed max-md:top-30 max-md:w-2xs max-md:bg-gray-800  max-md:left-0 max-md:items-start max-md:p-5 max-md:border-4 max-md:rounded-xl " id="links" ref={ulLinks}>
           <Link href="/">         <li className={`${geistMono.className} hover:underline transition-all `}>Home</li></Link>
           <Link href="/products"> <li className={`${geistMono.className} hover:underline transition-all `}>Products</li></Link>
           <Link href="/shipping"> <li className={`${geistMono.className} hover:underline transition-all `}>Shipping</li></Link>
