@@ -1,8 +1,7 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  module.exports = {
-  // Allow GLB files
+  // Allow GLB/GLTF files
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(glb|gltf)$/,
@@ -16,7 +15,8 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
-};
+  // Optional: Enable React Strict Mode
+  reactStrictMode: true,
 };
 
 export default nextConfig;
