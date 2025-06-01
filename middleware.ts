@@ -1,12 +1,8 @@
 // middleware.js
-import { authMiddleware } from '@clerk/nextjs';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
-export default authMiddleware({
+export default clerkMiddleware({
   publicRoutes: ['/', '/api/webhook'],
-  // Add this to fix cookie issues:
-  afterAuth(auth, req) {
-    if (req.nextUrl.pathname === '/') return;
-  },
 });
 
 export const config = {
