@@ -1,8 +1,16 @@
-// middleware.js
-import { clerkMiddleware } from '@clerk/nextjs/server';
+// middleware.ts
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export default clerkMiddleware({
-  publicRoutes: ['/', '/api/webhooks'],
+const isProtectedRoute = createRouteMatcher([
+  // Add your protected routes here
+  '/dashboard(.*)',
+  '/account(.*)',
+]);
+
+export default clerkMiddleware((auth, req) => {
+  if (isProtectedRoute(req)) {
+    auth().protect();
+  }
 });
 
 export const config = {
