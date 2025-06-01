@@ -1,8 +1,13 @@
+// middleware.ts
 import { clerkMiddleware } from '@clerk/nextjs/server';
 
-export default clerkMiddleware({
-  debug: process.env.NODE_ENV === 'development',
-  skipCookieCheck: true // Disables cookie domain validation
+export default clerkMiddleware((auth, req) => {
+  // Public routes - no authentication required
+  const publicRoutes = ['/', '/api/webhook'];
+  
+  if (!publicRoutes.includes(req.nextUrl.pathname)) {
+    auth().protect();
+  }
 });
 
 export const config = {
