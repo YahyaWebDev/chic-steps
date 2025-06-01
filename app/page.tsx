@@ -55,8 +55,8 @@ export default function Home(){
       <div className="absolute top-45 bg-transparent w-[230px] h-[230px] z-[-1] rounded-full shadow-[0px_0px_80px_1px_#ffffff]"></div>
       <AnimatedShoe />
       <div className={`m-8 p-5 flex justify-center items-center flex-nowrap gap-5 flex-col`}>
-        <Link href="/products">
-        <button className={`${spaceGrotesk.className} absolute top-[80%] bg-gradient-to-tr from-lime-500 to-emerald-600 text-black text-center font-bold pr-2 pl-2 pt-3 pb-3 rounded-4xl hover:bg-gradient-to-br hover:from-sky-600 hover:to-blue-300 cursor-pointer outline-1 hover:text-blue-700 hover:outline-4 transition-all duration-1000 shadow-[0px_0px_15px_1px_#ffffff]`}>
+        <Link href="/products"  className={`${spaceGrotesk.className} absolute top-[80%] bg-gradient-to-tr from-lime-500 to-emerald-600 text-black text-center font-bold pr-2 pl-2 pt-3 pb-3 rounded-4xl hover:bg-gradient-to-br hover:from-sky-600 hover:to-blue-300 cursor-pointer outline-1 hover:text-blue-700 hover:outline-4 transition-all duration-1000 shadow-[0px_0px_15px_1px_#ffffff]`}>
+        <button>
         <Link href="/products">Shop Now</Link>
         </button>
         
