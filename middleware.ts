@@ -1,7 +1,7 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
 
 export default clerkMiddleware({
-  skipCookieCheck: true // Skip in all environments
+  skipCookieCheck: process.env.NODE_ENV !== 'production'
 });
 
 export const config = {
