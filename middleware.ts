@@ -1,15 +1,23 @@
 // middleware.ts
-import { clerkMiddleware } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export default clerkMiddleware(async (auth, req) => {
-  // Public routes - no authentication required
-  const publicRoutes = ['/', '/api/webhook'];
-  
-  if (!publicRoutes.includes(req.nextUrl.pathname)) {
-    await auth().protect();  // Added 'await'
+// Define public routes
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/api/webhook',
+  '/sign-in(.*)',
+  '/sign-up(.*)'
+]);
+
+export default clerkMiddleware((auth, req) => {
+  if (!isPublicRoute(req)) {
+    // New v5+ protection syntax
+    return auth().protect();
   }
+  // Allow public routes
+  return NextResponse.next();
 });
 
 export const config = {
-  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trrc)(.*)'],
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
 };
