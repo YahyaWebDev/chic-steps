@@ -1,7 +1,7 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
 
 export default clerkMiddleware({
-  skipCookieCheck: process.env.NODE_ENV !== 'production'
+  ignoredRoutes: ['/api/some-route'], // Routes that won't trigger auth checks
 });
 
 export const config = {
