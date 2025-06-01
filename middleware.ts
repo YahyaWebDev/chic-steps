@@ -12,7 +12,7 @@ export default clerkMiddleware(async (auth, req) => {  // Note the async
       return new Response('Unauthorized', { 
         status: 307,
         headers: { 
-          Location: 'https://natural-bluebird-84.clerk.accounts.dev' 
+          Location: 'https://chic-steps.vercel.app/natural-bluebird-84.clerk.accounts.dev' 
         }
       });
     }
