@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider authorizedParties={['https://pizza-street.vercel.app']}>
+    <ClerkProvider>
     <html lang="en">
       <body
         className={` ${GeistMono.className} antialiased text-white bg-black p-0 m-0 box-border`}
